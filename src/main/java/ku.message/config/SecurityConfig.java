@@ -1,52 +1,34 @@
 package ku.message.config;
 
-import ku.message.service.AuthenticationService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter
 {
-	@Autowired
-	private AuthenticationService authenticationService;
-
 	@Override
 	protected void configure(HttpSecurity http) throws Exception
 	{
 		http
 				.authorizeRequests()
-				.antMatchers("/home", "/signup","/css/**", "/js/**").permitAll()
-				.anyRequest().authenticated();
-		http.formLogin()
-				.defaultSuccessUrl("/message", true)
-				.and().logout();
-	}
+				.antMatchers("/home", "/css/**", "/js/**").permitAll()
+				.anyRequest().authenticated()
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception
-	{
-		auth.authenticationProvider(this.authenticationService);
-	}
+				.and()
+				.exceptionHandling()
+				.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
 
-	@Override
-	public void configure(WebSecurity web) throws Exception
-	{
-		web
-				.ignoring()
-				.antMatchers("/h2-console/**");
-	}
+				.and()
+				.oauth2Login()
+				.defaultSuccessUrl("/home").permitAll()
 
-	@Bean
-	public PasswordEncoder encoder() {
-		return new BCryptPasswordEncoder(12);
+				.and()
+				.logout()
+				.logoutSuccessUrl("/home").permitAll();
 	}
 }
