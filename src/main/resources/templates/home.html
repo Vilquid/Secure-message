@@ -10,6 +10,22 @@
 	<div class="jumbotron">
 		<h1 class="display-4" th:text="${greeting}"></h1>
 	</div>
+	<div th:unless="${authenticated}">
+		Login with GitHub:
+		<a href="/oauth2/authorization/github">click here</a>
+	</div>
+	<div th:if="${authenticated}">
+		Logged in as: <span th:text="${user}"></span>
+		<ul>
+			<li><a th:href="@{/message}">View message</a></li>
+			<li><a th:href="@{/post}">Post new message</a></li>
+		</ul>
+		<p>
+			<form th:action="@{/logout}" method="POST">
+				<button type="submit" class="btn btn-primary">Logout</button>
+			</form>
+		</p>
+	</div>
 </div>
 </body>
 </html>
