@@ -17,21 +17,19 @@ public class AuthenticationService implements AuthenticationProvider
 	private UserRepository repository;
 
 	@Autowired
-	private HashService hashService;
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException
 	{
 		String username = authentication.getName();
 		String password = authentication.getCredentials().toString();
+
 		User user = repository.findByUsername(username);
 
 		if (user != null)
 		{
-			String salt = user.getSalt();
-			String hashedPassword = hashService.getHashedValue(password, salt);
-
-			if (user.getPassword().equals(hashedPassword))
+			if (passwordEncoder.matches(password, user.getPassword()))
 			{
 				return new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>());
 			}
