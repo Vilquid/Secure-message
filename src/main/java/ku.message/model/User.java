@@ -16,5 +16,8 @@ public class User
 	private String salt;
 	private String firstName;
 	private String lastName;
+
+	public Object getPassword() {
+	}
 	// .... generate getter/setter for all attributes
 }

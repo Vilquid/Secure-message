@@ -15,6 +15,7 @@ public class UserService
 	private HashService hashService;
 	public boolean isUsernameAvailable(String username)
 	{
+		//
 		return repository.findByUsername(username) == null;
 	}
 
@@ -27,7 +28,7 @@ public class UserService
 		newUser.setUsername(user.getUsername());
 
 		String salt = hashService.getSalt();
-		String hashedPassword = hashService.getHashedValue(user.getPassword(), salt);
+		String hashedPassword = hashService.getHashedValue((String) user.getPassword(), salt);
 
 		newUser.setSalt(salt);
 		newUser.setPassword(hashedPassword);

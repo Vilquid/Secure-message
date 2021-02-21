@@ -1,6 +1,7 @@
 package ku.message.service;
 
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
@@ -25,7 +26,7 @@ public class HashService
 	public String getHashedValue(String data, String salt)
 	{
 		byte[] hashedValue = null;
-		KeySpec spec = new PBEKeySpec(data.toCharArray(), salt.getBytes(), 5000, 128);
+		KeySpec spec = new PBEKeySpec(data.toCharArray(), salt.getBytes(), 100000, 128);
 
 		try
 		{
