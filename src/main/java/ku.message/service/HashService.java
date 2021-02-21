@@ -1,6 +1,7 @@
 package ku.message.service;
 
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.NoSuchAlgorithmException;
