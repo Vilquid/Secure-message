@@ -17,5 +17,7 @@ public class User
 
 	private String firstName;
 	private String lastName;
+
+	private String getUsername;
 	// ... generate getter/setter for all attributes
 }
